@@ -1,240 +1,156 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Pysch Admin",
-    "version": "1.0",
-    "description": "Nodejs server APIs for Pysch Admin"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:7000",
-      "description": "Dev"
-    }
-  ],
-  "paths": {
-    "/api/register": {
-      "post": {
-        "summary": "Register",
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request - Invalid or missing attributes"
-          }
-        },
-        "operationId": "post-api-register",
-        "description": "Register New Admin",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "firstName": {
-                    "type": "string"
-                  },
-                  "lastName": {
-                    "type": "string"
-                  },
-                  "mobile": {
-                    "type": "string"
-                  },
-                  "gender": {
-                    "type": "string",
-                    "description": "M: Male, F: Female, O: Others"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {
-                "example-1": {
-                  "value": {
-                    "email": "johndoe@gmail.com",
-                    "firstName": "John",
-                    "lastName": "Doe",
-                    "mobile": "1234567890",
-                    "gender": "M",
-                    "password": "Password$1!"
-                  }
-                }
-              }
-            }
-          },
-          "description": ""
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "header",
-            "name": "Content-Type"
-          }
-        ]
-      }
-    },
-    "/api/login": {
-      "post": {
-        "summary": "Login",
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "isActive": {
-                          "type": "boolean"
-                        },
-                        "isVerified": {
-                          "type": "boolean"
-                        },
-                        "_id": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "firstName": {
-                          "type": "string"
-                        },
-                        "lastName": {
-                          "type": "string"
-                        },
-                        "mobile": {
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "token": {
-                      "type": "string",
-                      "description": "Token invalidates on every server restart"
-                    }
-                  }
-                },
-                "examples": {
-                  "example-1": {
-                    "value": {
-                      "user": {
-                        "isActive": true,
-                        "isVerified": true,
-                        "_id": "5eb31a544b0e2d4d12c334f8",
-                        "email": "johndoe@gmail.com",
-                        "firstName": "John",
-                        "lastName": "Doe",
-                        "mobile": "8572076907",
-                        "createdAt": "2020-05-06T20:13:08.747Z",
-                        "updatedAt": "2020-05-06T20:13:08.838Z",
-                        "__v": 0
-                      },
-                      "token": "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoiSXN3UnJfY0w1bWJrcExJdnVxb3hWTHhDZnliVmhMOFhYQS1tRkNCMXFDOCJ9..lQkZ-Ud63JZ-S5Rp.-7yqE9WgIIkgTd_pSJpiWfu8C81oM0XshzbPVAv0Tr9---zasXBmT8AqeIGag3Pbc-QP2BI7LVlV-ssLnnYcRkFsR6Nwb-bYw3qwVON83ZmPkCNGsRbDz2llmWMjXsChVkuHf9odq93GaBvzQ0pOR2f4GUgqxB9QFZwmFllQCr3OVILRtdp-pp3kmhOXYlV1sowkV-9kJoaVwIFBUSg6XahgwMifwG8j0pBfcrZZpErL50dm53feJXUNYiyboaFclUo6BC-AAm7xGm7IxIt4xdE62_90YJkbcGKgtA0OTL531U-aYab_gocJlrvWfqc6sixF.vsMap6f8xTAebaBl2_fbvg"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid credentials or Account not verified"
-          }
-        },
-        "operationId": "post-api-login",
-        "description": "Login Admin",
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "header"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {
-                "example-1": {
-                  "value": {
-                    "email": "johndoe@gmail.com",
-                    "password": "Password$1!"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/admin/approveAdmin/{newAdminID}": {
-      "put": {
-        "summary": "Approve new admins",
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request - New admin ID is missing"
-          },
-          "403": {
-            "description": "Forbidden - Authorization header missing or value invalid"
-          }
-        },
-        "operationId": "put-api-admin-approveAdmin-:newAdminID",
-        "description": "Approve admins that register to the portal",
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "example": "Bearer eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoiSXN3UnJfY0w1bWJrcExJdnVxb3hWTHhDZnliVmhMOFhYQS1tRkNCMXFDOCJ9..UimYrytkxj-AIfzP.HQ-9VTvukgQdCenFxUTXEOT6OTm4sJD3stF8tFzmE4ULsKGTqSVzOWSCTwZ8LrSQCxgFFhrVfHRdxXG0_pMT4iqzgQ_AlLw52r6FdF0tkbnuiQoAbphM4RbFZ9cnjCLIQpwxPcZV6WpqlJrLhQbAyrSilLXyTuv8HQElx2v-qDAfYgcoYHGUYlAqgpJv1b_MlqRyCoTfXl67SHs3tnoD89FFC67A76do8QcoWJY_9IuKFNj6d7_Cd35MP26POFIwwwBBEuUNGYpcAXIGVOgg0H_Qym3k7gCTBU1oLknWwX1JNZKXCF10-yfZboJn1O21cN1e.JG9dlplbw2gQo7mh-4cDTg"
-            },
-            "in": "header",
-            "name": "Authorization"
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "schema": {
-            "type": "string"
-          },
-          "name": "newAdminID",
-          "in": "path",
-          "required": true,
-          "description": "_id of the admin to be approved"
-        }
-      ]
-    }
-  },
-  "components": {
-    "securitySchemes": {}
-  }
-}
+openapi: 3.0.0
+info:
+  title: Pysch Admin
+  version: '1.0'
+  description: Nodejs server APIs for Pysch Admin
+  contact:
+    name: Pysch
+    email: j4inam@gmail.com
+servers:
+  - url: 'http://localhost:7000'
+    description: dev
+paths:
+  /api/register:
+    post:
+      summary: Register
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request - Invalid or missing attributes
+      operationId: post-api-register
+      description: Register New Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                mobile:
+                  type: string
+                gender:
+                  type: string
+                  description: 'M: Male, F: Female, O: Others'
+                password:
+                  type: string
+            examples:
+              example-1:
+                value:
+                  email: johndoe@gmail.com
+                  firstName: John
+                  lastName: Doe
+                  mobile: '1234567890'
+                  gender: M
+                  password: 'Password$1!'
+        description: ''
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+  /api/login:
+    post:
+      summary: Login
+      tags:
+        - admin
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      isActive:
+                        type: boolean
+                      isVerified:
+                        type: boolean
+                      _id:
+                        type: string
+                      email:
+                        type: string
+                      firstName:
+                        type: string
+                      lastName:
+                        type: string
+                      mobile:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                  token:
+                    type: string
+                    description: Token invalidates on every server restart
+              examples:
+                example-1:
+                  value:
+                    user:
+                      isActive: true
+                      isVerified: true
+                      _id: 5eb31a544b0e2d4d12c334f8
+                      email: johndoe@gmail.com
+                      firstName: John
+                      lastName: Doe
+                      mobile: '8572076907'
+                      createdAt: '2020-05-06T20:13:08.747Z'
+                      updatedAt: '2020-05-06T20:13:08.838Z'
+                      __v: 0
+                    token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoiSXN3UnJfY0w1bWJrcExJdnVxb3hWTHhDZnliVmhMOFhYQS1tRkNCMXFDOCJ9..lQkZ-Ud63JZ-S5Rp.-7yqE9WgIIkgTd_pSJpiWfu8C81oM0XshzbPVAv0Tr9---zasXBmT8AqeIGag3Pbc-QP2BI7LVlV-ssLnnYcRkFsR6Nwb-bYw3qwVON83ZmPkCNGsRbDz2llmWMjXsChVkuHf9odq93GaBvzQ0pOR2f4GUgqxB9QFZwmFllQCr3OVILRtdp-pp3kmhOXYlV1sowkV-9kJoaVwIFBUSg6XahgwMifwG8j0pBfcrZZpErL50dm53feJXUNYiyboaFclUo6BC-AAm7xGm7IxIt4xdE62_90YJkbcGKgtA0OTL531U-aYab_gocJlrvWfqc6sixF.vsMap6f8xTAebaBl2_fbvg
+        '401':
+          description: Unauthorized - Invalid credentials or Account not verified
+      operationId: post-api-login
+      description: Login Admin
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            examples:
+              example-1:
+                value:
+                  email: johndoe@gmail.com
+                  password: 'Password$1!'
+  '/api/admin/approveAdmin/{newAdminID}':
+    put:
+      summary: Approve new admins
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request - New admin ID is missing
+        '403':
+          description: Forbidden - Authorization header missing or value invalid
+      operationId: 'put-api-admin-approveAdmin-:newAdminID'
+      description: Approve admins that register to the portal
+      parameters:
+        - schema:
+            type: string
+            example: Bearer eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoiSXN3UnJfY0w1bWJrcExJdnVxb3hWTHhDZnliVmhMOFhYQS1tRkNCMXFDOCJ9..UimYrytkxj-AIfzP.HQ-9VTvukgQdCenFxUTXEOT6OTm4sJD3stF8tFzmE4ULsKGTqSVzOWSCTwZ8LrSQCxgFFhrVfHRdxXG0_pMT4iqzgQ_AlLw52r6FdF0tkbnuiQoAbphM4RbFZ9cnjCLIQpwxPcZV6WpqlJrLhQbAyrSilLXyTuv8HQElx2v-qDAfYgcoYHGUYlAqgpJv1b_MlqRyCoTfXl67SHs3tnoD89FFC67A76do8QcoWJY_9IuKFNj6d7_Cd35MP26POFIwwwBBEuUNGYpcAXIGVOgg0H_Qym3k7gCTBU1oLknWwX1JNZKXCF10-yfZboJn1O21cN1e.JG9dlplbw2gQo7mh-4cDTg
+          in: header
+          name: Authorization
+    parameters:
+      - schema:
+          type: string
+        name: newAdminID
+        in: path
+        required: true
+        description: _id of the admin to be approved
+components:
+  securitySchemes: {}
