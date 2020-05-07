@@ -1,3 +1,3 @@
-## API DOCUMENTATION
+## API DOCUMENTATION - Link to shared Postman collection
 
-# https://pysch-admin-1.api-docs.io/1.0/welcome/pysch-admin
+# https://www.getpostman.com/collections/5c7a189c89dab8c59b9a
