@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "0716e763-a8e0-40d4-926c-04d3474c3d29",
+		"name": "Pysch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"j4inam@gmail.com\", \"firstName\": \"Jainam\", \"lastName\": \"Sheth\", \"mobile\": \"8572076907\", \"gender\":\"M\", \"password\":\"rootroot\"}"
+				},
+				"url": {
+					"raw": "localhost:7000/api/register",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"j4inam@gmail.com\", \"password\":\"rootroot\"}"
+				},
+				"url": {
+					"raw": "localhost:7000/api/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Approve Admin Acc",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoiSXN3UnJfY0w1bWJrcExJdnVxb3hWTHhDZnliVmhMOFhYQS1tRkNCMXFDOCJ9..UimYrytkxj-AIfzP.HQ-9VTvukgQdCenFxUTXEOT6OTm4sJD3stF8tFzmE4ULsKGTqSVzOWSCTwZ8LrSQCxgFFhrVfHRdxXG0_pMT4iqzgQ_AlLw52r6FdF0tkbnuiQoAbphM4RbFZ9cnjCLIQpwxPcZV6WpqlJrLhQbAyrSilLXyTuv8HQElx2v-qDAfYgcoYHGUYlAqgpJv1b_MlqRyCoTfXl67SHs3tnoD89FFC67A76do8QcoWJY_9IuKFNj6d7_Cd35MP26POFIwwwBBEuUNGYpcAXIGVOgg0H_Qym3k7gCTBU1oLknWwX1JNZKXCF10-yfZboJn1O21cN1e.JG9dlplbw2gQo7mh-4cDTg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7000/api/account/admin/approveAdmin/5eb35687dfde000bf23b380f",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"account",
+						"admin",
+						"approveAdmin",
+						"5eb35687dfde000bf23b380f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Admins",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIiwia2lkIjoidTRiYlNpNFc2TzNUdzRvb19pclo4cTZvdGpVdzlpSFBJeHdMUVdlNXM1OCJ9..8aMIUsqOrDTGG2C2.x3CQbIwGK2MVKiLFqbAminz72zd8z6wcSLFzvLa7xL5S3iLjVVDdlBP8vjZg8cQwtEop-BsYu56lOTe4qeNHkL0aPOAuH23NKSXtu5BqKHjQ0hnz42qNWB55cpIH7tCpoDwde_tGGwu_Wm_ryvkl3Gng9qRMHFoUhCiqDiv5omvVShbSMmIyt_kvv8gSoaJoT6nrc7PwPALYkQefW9_dopwqXvBC99AbDsIv3Sb93idshN-atqVRtjv4gAG9Cokf5MK3LOWKdzE2M2ZdeQ-ptUYhy-9hnbsomsoLhf-j04VHvIOyEL2x0XgqfGlzq8DJZcOR.OrjMgVk8IJ8zC_C7JR8dGw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7000/api/account/admin",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"account",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
