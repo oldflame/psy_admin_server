@@ -64,6 +64,7 @@ exports = module.exports = (app) => {
   app.post('/api/login', authService.login);
 
   // Authorized Requests
-  app.all('/api/admin/*', authenticate)
-  app.put('/api/admin/approveAdmin/:newAdminID', adminService.approveNewAdmin)
+  app.all('/api/account/*', authenticate);
+  app.get('/api/account/admin', adminService.getAllAdmins);
+  app.put('/api/account/admin/approveAdmin/:newAdminID', adminService.approveNewAdmin);
 };
