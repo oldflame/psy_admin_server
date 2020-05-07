@@ -1,4 +1,5 @@
 var authService = require("./services/auth");
+var adminService = require("./services/admin");
 var jose = require('node-jose');
 var config = require('./config');
 
@@ -64,5 +65,5 @@ exports = module.exports = (app) => {
 
   // Authorized Requests
   app.all('/api/admin/*', authenticate)
-  app.put('/api/admin/approveAdmin/:newAdminID', authService.approveNewAdmin)
+  app.put('/api/admin/approveAdmin/:newAdminID', adminService.approveNewAdmin)
 };
