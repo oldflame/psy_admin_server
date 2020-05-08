@@ -1,6 +1,7 @@
 var authService = require("./services/auth");
 var adminService = require("./services/admin");
 var locationService = require("./services/location");
+var targetGroupService = require("./services/targetGroups");
 var jose = require('node-jose');
 var config = require('./config');
 
@@ -77,4 +78,11 @@ exports = module.exports = (app) => {
   app.post('/api/account/location', locationService.addLocation);
   app.delete('/api/account/location/:locationID', locationService.deleteLocation);
   app.put('/api/account/location', locationService.updateLocation);
+
+  // Target Group Routes
+  app.get('/api/account/targetGroups', targetGroupService.getActiveTargetGroups);
+  app.get('/api/account/targetGroups/all', targetGroupService.getAllTargetGroups);
+  app.post('/api/account/targetGroups', targetGroupService.addTargetGroup);
+  app.put('/api/account/targetGroups/assignTraining/:targetGroupID/:trainingID', targetGroupService.assignTraining);
+  app.delete('/api/account/targetGroups/:targetGroupID', targetGroupService.deleteTargetGroup);
 };
