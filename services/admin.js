@@ -1,4 +1,17 @@
 var adminService = {
+  getAllAdmins: (req, res) => {
+    req.app.db.models.Admin.find({}, 'email firstName lastName isActive isVerified mobile createdAt approvedAt approvedBy').exec((err, admins) => {
+      if (err) {
+        console.log("Get all admins err", err);
+        return res.status(500).json({
+          msg: "Failed to fetch admins. Try again!"
+        })
+      }
+
+      res.status(200).json(admins);
+    })
+  },
+
   approveNewAdmin: (req, res) => {
     console.log("Approving admin", req.params)
     var workflow = req.app.utility.workflow(req, res);

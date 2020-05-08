@@ -169,7 +169,7 @@ const createAuthenticationToken = (data) => {
             });
           }
 
-          if (!req.body.mobile || !req.body.mobile.trim()) {
+          if (!req.body.mobile || !req.body.mobile.toString().trim()) {
             return res.status(400).json({
               msg: "Mobile is required"
             });
