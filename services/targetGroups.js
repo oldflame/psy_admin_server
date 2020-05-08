@@ -17,13 +17,13 @@ var targetGroupsService = {
             workflow.emit('writeTargetGroupToDB');
         });
 
-        workflow.emit('writeTargetGroupToDB', () => {
+        workflow.on('writeTargetGroupToDB', () => {
             const targetGroup = {
                 name: req.body.name,
                 description: req.body.description,
                 tags: req.body.tags,
                 location: req.body.location,
-                trainings: [req.body.training],
+                trainings: req.body.training ? [req.body.training] : [],
             }
             req.app.db.models.TargetGroup.create(targetGroup, (err, targetGroup) => {
                 if (err) {
@@ -70,7 +70,7 @@ var targetGroupsService = {
     deleteTargetGroup: (req, res) => {
         var workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
-            if (!req.params.targetGroupID || !req.body.targetGroupID.trim()) {
+            if (!req.params.targetGroupID || !req.params.targetGroupID.trim()) {
                 return res.status(400).json({
                     msg: "Target Group ID is required"
                 });
@@ -103,8 +103,9 @@ var targetGroupsService = {
 
                 return res.status(200).json();
             })
-        })
+        });
 
+        workflow.emit('validateData');
     },
 
     assignTraining: (req, res) => {
