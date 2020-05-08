@@ -1,5 +1,6 @@
 var authService = require("./services/auth");
 var adminService = require("./services/admin");
+var locationService = require("./services/location");
 var jose = require('node-jose');
 var config = require('./config');
 
@@ -65,6 +66,15 @@ exports = module.exports = (app) => {
 
   // Authorized Requests
   app.all('/api/account/*', authenticate);
+
+  // Admin Routes
   app.get('/api/account/admin', adminService.getAllAdmins);
   app.put('/api/account/admin/approveAdmin/:newAdminID', adminService.approveNewAdmin);
+
+  // Locations Routes
+  app.get('/api/account/location', locationService.getActiveLocations);
+  app.get('/api/account/location/all', locationService.getAllLocations);
+  app.post('/api/account/location', locationService.addLocation);
+  app.delete('/api/account/location/:locationID', locationService.deleteLocation);
+  app.put('/api/account/location', locationService.updateLocation);
 };
