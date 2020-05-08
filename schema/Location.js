@@ -25,7 +25,7 @@ exports = module.exports = function (app, mongoose) {
         city: String,
         state: String,
         pincode: String,
-        phone: String,
+        mobile: String,
         email: {
             type: String,
             required: true,
