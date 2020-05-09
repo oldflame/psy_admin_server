@@ -2,6 +2,8 @@ var authService = require("./services/auth");
 var adminService = require("./services/admin");
 var locationService = require("./services/location");
 var targetGroupService = require("./services/targetGroups");
+var questionService = require("./services/question");
+var questionCategoryService = require("./services/questionCategory");
 var jose = require('node-jose');
 var config = require('./config');
 
@@ -85,4 +87,16 @@ exports = module.exports = (app) => {
   app.post('/api/account/targetGroups', targetGroupService.addTargetGroup);
   app.put('/api/account/targetGroups/assignTraining/:targetGroupID/:trainingID', targetGroupService.assignTraining);
   app.delete('/api/account/targetGroups/:targetGroupID', targetGroupService.deleteTargetGroup);
+
+  // Question Routes 
+  app.get('/api/account/questions', questionService.getAllQuestions);
+  app.get('/api/account/questions/:questioncategory', questionService.getQuestionsForCategory);
+  app.post('/api/account/addQuestion', questionService.addNewQuestion);
+  app.delete('/app.account/deleteQuestion', questionService.deleteQuestion);
+
+
+  // Question Category Routes 
+  app.get('/api/account/questionsCategory', questionCategoryService.getAllQuestionCategories);
+  app.post('/api/account/addQuestionsCategory', questionCategoryService.addQuestionCategory);
+  app.delete('/api/account/deleteQuestionCategory', questionCategoryService.deleteQuestionCategory);
 };
