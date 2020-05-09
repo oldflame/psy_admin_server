@@ -1,6 +1,6 @@
 var questionService = {
   getAllQuestions: (req, res) => {
-    req.app.db.models.Questions.find({}, (err, questions) => {
+    req.app.db.models.Questions.find({isDeleted: false}, (err, questions) => {
       if (err) {
         console.log("Error", err);
         return res.json([]);
@@ -26,7 +26,7 @@ var questionService = {
   },
 
   addNewQuestion: (req, res) => {
-    workflow.emit('validateData');
+    var workflow = req.app.utility.workflow(req, res);
     workflow.on(
       "validateData",
       () => {
@@ -56,6 +56,8 @@ var questionService = {
         });
       })
     );
+    workflow.emit('validateData');
+
   },
 
   deleteQuestion: (req, res) => {
