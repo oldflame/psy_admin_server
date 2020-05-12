@@ -14,7 +14,7 @@ var questionCategoryService = {
   },
 
   getAllQuestionCategories: (req, res) => {
-    req.app.db.models.QuestionCategory.find({}, (err, questionCategories) => {
+    req.app.db.models.QuestionCategory.find({isDeleted:false}, (err, questionCategories) => {
       if (err) {
         console.log("Error", err);
         return res.json([]);
