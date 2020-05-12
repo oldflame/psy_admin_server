@@ -30,7 +30,7 @@ var questionService = {
     workflow.on(
       "validateData",
       () => {
-        if (!req.body.name || !req.body.name.toString().trim()) {
+        if (!req.body.questionName || !req.body.questionName.toString().trim()) {
           return res.status(400).json({
             msg: "Question Name is required",
           });

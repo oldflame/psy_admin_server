@@ -2,7 +2,7 @@
 
 exports = module.exports = function (app, mongoose) {
     var QuestionCategorySchema = new mongoose.Schema({
-        categoryName: {
+        name: {
             type: String,
             required: true,
             trim: true,
@@ -22,10 +22,10 @@ exports = module.exports = function (app, mongoose) {
             trim: true
         },
         startLabel: {
-            type: Number
+            type: String
         },
         endLabel: {
-            type: Number
+            type: String
         }
 
     }, {

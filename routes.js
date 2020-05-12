@@ -114,5 +114,5 @@ exports = module.exports = (app) => {
   // Question Category Routes 
   app.get('/api/account/questionsCategory', questionCategoryService.getAllQuestionCategories);
   app.post('/api/account/addQuestionsCategory', questionCategoryService.addQuestionCategory);
-  app.delete('/api/account/deleteQuestionCategory', questionCategoryService.deleteQuestionCategory);
+  app.delete('/api/account/deleteQuestionCategory/:questionCategoryId', questionCategoryService.deleteQuestionCategory);
 };
