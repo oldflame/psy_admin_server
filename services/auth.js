@@ -3,6 +3,7 @@ var bcrypt = require("bcrypt");
 var _ = require("lodash");
 var jose = require('node-jose');
 var config = require('../config');
+var firebaseAdmin = require('firebase-admin');
 
 const createAuthenticationToken = (data) => {
     return new Promise((resolve, reject) => {
@@ -248,12 +249,12 @@ const createAuthenticationToken = (data) => {
                 msg: 'Mobile already registered. Use a different phone number to register.'
               })
             }
-            workflow.emit('createAdminObject');
+            workflow.emit('writeAdminToDB');
           })
         })
 
-        workflow.on("createAdminObject", () => {
-          console.log('createAdminObject');
+        workflow.on('writeAdminToDB', () => {
+          console.log('writeAdminToDB')
           var admin = {
             email: req.body.email,
             firstName: req.body.firstName,
@@ -261,76 +262,37 @@ const createAuthenticationToken = (data) => {
             mobile: req.body.mobile,
             gender: req.body.gender,
           };
-
-          bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-            if (err) {
-              console.log("Password hashing failed", err);
-              return res.status(400).json({
-                msg: 'Failed to create user. Try again'
-              });
-            }
-            console.log('hash', hash)
-            workflow.emit("writeAdminToDB", {
-              admin,
-              hash
-            });
-          });
-        });
-
-        workflow.on('writeAdminToDB', (adminData) => {
-          console.log('writeAdminToDB')
-          req.app.db.models.Admin.create(adminData.admin, (err, admin) => {
+          req.app.db.models.Admin.create(admin, (err, adminData) => {
             if (err) {
               console.log("Create Admin err", err);
               return res.status(400).json({
                 msg: 'Failed to create admin. Try again'
               })
             }
-            workflow.emit('saveAdminPassword', {
-              admin,
-              passwordHash: adminData.hash
-            });
+            workflow.emit('createFirebaseUser', adminData);
           })
         });
 
-        workflow.on("saveAdminPassword", (userObject) => {
-          console.log('saveAdminPassword')
-          const authData = {
-            userId: userObject.admin._id,
-            passwordHash: userObject.passwordHash
-          }
-
-          req.app.db.models.Authentication.create(authData, (err, authObject) => {
-            if (err) {
-              console.log(err);
+        workflow.on('createFirebaseUser', (adminData) => {
+          console.log("Writing UID", adminData._id)
+          firebaseAdmin.auth().createUser({
+            uid: adminData._id.toString(),
+            email: adminData.email,
+            password: req.body.password,
+            displayName: adminData.firstName + " " + adminData.lastName
+          }).then(function(userRecord) {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log('Successfully created new user:', userRecord);
+            return res.status(200).json();
+          })
+          .catch(function(error) {
+            console.log("Create Admin err", error);
               return res.status(400).json({
                 msg: 'Failed to create admin. Try again'
-              });
-            }
-            workflow.emit('setPassworIDToAdmin', {
-              admin: userObject.admin,
-              authObject
-            })
-          });
-        });
-
-        workflow.on('setPassworIDToAdmin', (userData) => {
-          req.app.db.models.Admin.updateOne({
-            _id: userData.admin._id
-          }, {
-            $set: {
-              password: userData.authObject._id
-            }
-          }).exec((err) => {
-            if (err) {
-              console.log("Link password err", err)
-              return res.status(400).json({
-                msg: "Failed to create admin. Try again!"
               })
-            }
-            return res.status(200).json()
-          })
+          });
         })
+
         workflow.emit("validateData");
       }
     };

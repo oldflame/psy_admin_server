@@ -9,7 +9,8 @@ var express = require('express'),
   session = require('express-session'),
   mongoStore = require('connect-mongo')(session),
   helmet = require('helmet'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  firebaseAdmin = require('firebase-admin');
 
 
 var app = express();
@@ -46,6 +47,13 @@ app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', () => {
   //and... we have a data store
   console.log('DB connection successful');
+});
+
+// setup firebase admin
+var serviceAccount = require(config.GOOGLE_APPLICATION_CREDENTIALS);
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount),
+  databaseURL: "https://pysch-changiz.firebaseio.com"
 });
 
 require('./models')(app, mongoose);
