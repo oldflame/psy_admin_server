@@ -9,7 +9,8 @@ var express = require('express'),
   session = require('express-session'),
   mongoStore = require('connect-mongo')(session),
   helmet = require('helmet'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  firebaseAdmin = require('firebase-admin');
 
 
 var app = express();
@@ -28,10 +29,8 @@ var enableCORS = function (req, res, next) {
 app.use(enableCORS);
 global.appRoot = path.resolve(__dirname)
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.disable('x-powered-by');
@@ -46,6 +45,13 @@ app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', () => {
   //and... we have a data store
   console.log('DB connection successful');
+});
+
+// initialize firebase admin
+var serviceAccount = require(config.GOOGLE_APPLICATION_CREDENTIALS);
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount),
+  databaseURL: "https://pysch-changiz.firebaseio.com"
 });
 
 require('./models')(app, mongoose);
