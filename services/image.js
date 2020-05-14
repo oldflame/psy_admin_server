@@ -109,6 +109,71 @@ var imageService = {
         });
 
         workflow.emit('validateData');
+    },
+    
+    getAllImages: (req, res) => {
+        req.app.db.models.Image.find({}, (err, images) => {
+            if (err) {
+                console.log('Get images err', err);
+                res.status(400).json({
+                    msg: "Failed to fetch images. Try again!"
+                })
+            }
+
+            return res.status(200).json(images);
+        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit))
+    },
+    getActiveImages: (req, res) => {
+        req.app.db.models.Image.find({isDeleted: false}, (err, images) => {
+            if (err) {
+                console.log('Get images err', err);
+                res.status(400).json({
+                    msg: "Failed to fetch images. Try again!"
+                })
+            }
+
+            return res.status(200).json(images);
+        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit))
+    },
+    deleteImage: (req, res) => {
+        var workflow = req.app.utility.workflow(req, res);
+        workflow.on('validateData', () => {
+            if (!req.params.imageID || !req.params.imageID.toString().trim()) {
+                return res.status(400).json({
+                    msg: "Image ID is required"
+                });
+            }
+
+            workflow.emit('deleteImage');
+        });
+
+        workflow.on('deleteImage', () => {
+            req.app.db.models.Image.update({
+                _id: req.params.imageID
+            }, {
+                $set: {
+                    isDeleted: true
+                }
+            }).exec((err, deleted) => {
+                if (err) {
+                    console.log("Delete image err", err);
+                    return res.status(400).json({
+                        msg: "Failed to delete image. Try again!"
+                    });
+                }
+
+                if (!deleted) {
+                    console.log("Delete image err", err);
+                    return res.status(400).json({
+                        msg: "Failed to delete image. Try again!"
+                    });
+                }
+
+                return res.status(200).json();
+            })
+        });
+
+        workflow.emit('validateData');
     }
 }
 module.exports = imageService;

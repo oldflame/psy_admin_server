@@ -106,7 +106,10 @@ exports = module.exports = (app) => {
   app.delete('/api/account/imgCategory/:imageCategoryID', imageCategoryService.deleteImageCategory);
 
   // Image management routes
-  app.post('/api/account/image', imageService.addImage);
+  app.post('/api/account/images', imageService.addImage);
+  app.get('/api/account/images/all/:skip/:limit', imageService.getAllImages);
+  app.get('/api/account/images/:skip/:limit', imageService.getActiveImages);
+  app.delete('/api/account/images/:imageID', imageService.deleteImage);
 
   // Question Routes 
   app.get('/api/account/questions', questionService.getAllQuestions);
