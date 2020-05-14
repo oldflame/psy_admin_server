@@ -3,6 +3,7 @@ var adminService = require("./services/admin");
 var locationService = require("./services/location");
 var targetGroupService = require("./services/targetGroups");
 var imageCategoryService = require("./services/imageCategory");
+var imageService = require("./services/image");
 var questionService = require("./services/question");
 var questionCategoryService = require("./services/questionCategory");
 var jose = require('node-jose');
@@ -103,6 +104,9 @@ exports = module.exports = (app) => {
   app.get('/api/account/imgCategory/all', imageCategoryService.getAllImageCategories);
   app.post('/api/account/imgCategory', imageCategoryService.addNewCategory);
   app.delete('/api/account/imgCategory/:imageCategoryID', imageCategoryService.deleteImageCategory);
+
+  // Image management routes
+  app.post('/api/account/image', imageService.addImage);
 
   // Question Routes 
   app.get('/api/account/questions', questionService.getAllQuestions);
