@@ -1,6 +1,6 @@
 var questionService = {
   getAllQuestions: (req, res) => {
-    req.app.db.models.Questions.find({isDeleted: false}, (err, questions) => {
+    req.app.db.models.Questions.find({ isDeleted: false }, (err, questions) => {
       if (err) {
         console.log("Error", err);
         return res.json([]);
@@ -30,7 +30,10 @@ var questionService = {
     workflow.on(
       "validateData",
       () => {
-        if (!req.body.questionName || !req.body.questionName.toString().trim()) {
+        if (
+          !req.body.questionName ||
+          !req.body.questionName.toString().trim()
+        ) {
           return res.status(400).json({
             msg: "Question Name is required",
           });
@@ -56,22 +59,34 @@ var questionService = {
         });
       })
     );
-    workflow.emit('validateData');
-
+    workflow.emit("validateData");
   },
 
   deleteQuestion: (req, res) => {
-    req.app.db.models.Questions.deleteOne(
+    req.app.db.models.Questions.update(
       { _id: req.params.questionId },
-      (err, question) => {
-        if (err) {
-          console.log("Error", err);
-          return res.json([]);
-        }
-        console.log("Question Deleted", question);
-        return res.status(200).json(question);
+      {
+        $set: {
+          isDeleted: true,
+        },
       }
-    );
+    ).exec((err, deleted) => {
+      if (err) {
+        console.log("Delete Question err", err);
+        return res.status(400).json({
+          msg: "Failed to delete Question. Try again!",
+        });
+      }
+
+      if (!deleted) {
+        console.log("Delete Question err", err);
+        return res.status(400).json({
+          msg: "Failed to delete Question. Try again!",
+        });
+      }
+
+      return res.status(200).json();
+    });
   },
 };
 module.exports = questionService;

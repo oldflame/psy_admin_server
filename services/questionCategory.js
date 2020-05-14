@@ -34,16 +34,16 @@ var questionCategoryService = {
       }
     ).exec((err, deleted) => {
       if (err) {
-        console.log("Delete imageCategory err", err);
+        console.log("Delete Question Category err", err);
         return res.status(400).json({
-          msg: "Failed to delete imageCategory. Try again!",
+          msg: "Failed to delete Question Category. Try again!",
         });
       }
 
       if (!deleted) {
-        console.log("Delete imageCategory err", err);
+        console.log("Delete Question Category err", err);
         return res.status(400).json({
-          msg: "Failed to delete image category. Try again!",
+          msg: "Failed to delete Question Category. Try again!",
         });
       }
 
