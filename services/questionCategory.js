@@ -14,14 +14,16 @@ var questionCategoryService = {
   },
 
   getAllQuestionCategories: (req, res) => {
-    req.app.db.models.QuestionCategory.find({isDeleted:false}, (err, questionCategories) => {
-      if (err) {
-        console.log("Error", err);
-        return res.json([]);
+    req.app.db.models.QuestionCategory.find({},
+      (err, questionCategories) => {
+        if (err) {
+          console.log("Error", err);
+          return res.json([]);
+        }
+        console.log("All Question Categories: ", questionCategories);
+        return res.status(200).json(questionCategories);
       }
-      console.log("All Question Categories: ", questionCategories);
-      return res.status(200).json(questionCategories);
-    });
+    );
   },
 
   deleteQuestionCategory: (req, res) => {
@@ -29,7 +31,7 @@ var questionCategoryService = {
       { _id: req.params.questionCategoryId },
       {
         $set: {
-          isDeleted: true,
+          isDeleted: !(req.params.doRestore == "restore"),
         },
       }
     ).exec((err, deleted) => {
