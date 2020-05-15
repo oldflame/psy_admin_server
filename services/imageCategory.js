@@ -96,7 +96,7 @@ var imageCategory = {
                 _id: req.params.imageCategoryID
             }, {
                 $set: {
-                    isDeleted: true
+                    isDeleted: !(req.params.doRestore == "restore")
                 }
             }).exec((err, deleted) => {
                 if (err) {

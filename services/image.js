@@ -19,6 +19,12 @@ var imageService = {
                 });
             }
 
+            if (!req.body.fileType || !req.body.fileType.trim()) {
+                return res.status(400).json({
+                    msg: "File Type is required"
+                });
+            }
+
             if (!req.body.category || !req.body.category.toString().trim()) {
                 return res.status(400).json({
                     msg: "Image Category is required"
@@ -31,7 +37,7 @@ var imageService = {
                 });
             }
 
-            if (!req.body.imageType) {
+            if (req.body.imageType == null) {
                 return res.status(400).json({
                     msg: "Image type is required"
                 });
@@ -67,10 +73,16 @@ var imageService = {
         })
 
         workflow.on('uploadImageToBucket', imageData => {
+            if (req.body.content.indexOf('base64') != -1) {
+                req.body.content = req.body.content.split("base64,")[1]
+            }
+
+
             let bufferStream = new stream.PassThrough();
             bufferStream.end(new Buffer.from(req.body.content, 'base64'));
             const defaultBucket = firebaseAdmin.storage().bucket('pysch-changiz.appspot.com');
 
+            // Temporarily create image file on filesystem
             fs.writeFile(`temp/${req.body.category}_${imageData._id}_${req.body.fileName}`, req.body.content, 'base64', (err, res) => {
                 if (err) {
                     console.log("fs err", err)
@@ -80,10 +92,10 @@ var imageService = {
             defaultBucket.upload(`temp/${req.body.category}_${imageData._id}_${req.body.fileName}`, {
                 destination: `images/${req.body.category}_${imageData._id}_${req.body.fileName}`,
                 gzip: true,
-                contentType: "image/jpg",
+                contentType: req.body.fileType,
                 public: true,
                 metadata: {
-                    contentType: "image/jpg"
+                    contentType: req.body.fileType,
                 }
             }).then((files) => {
                 console.log("File uploaded", files[0].metadata.mediaLink)
@@ -104,6 +116,13 @@ var imageService = {
                         msg: "Failed to add image. Try again!"
                     })
                 }
+
+                // Delete image temporarily stored on filesystem
+                fs.rmdir(`temp/${req.body.category}_${imageObject.imageData._id}_${req.body.fileName}`, (err, res) => {
+                    if (err) {
+                        console.log("fs err", err)
+                    }
+                })
                 return res.status(200).json(image)
             })
         });
@@ -121,7 +140,7 @@ var imageService = {
             }
 
             return res.status(200).json(images);
-        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit))
+        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit)).populate('category')
     },
     getActiveImages: (req, res) => {
         req.app.db.models.Image.find({isDeleted: false}, (err, images) => {
@@ -133,7 +152,7 @@ var imageService = {
             }
 
             return res.status(200).json(images);
-        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit))
+        }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit)).populate('category')
     },
     deleteImage: (req, res) => {
         var workflow = req.app.utility.workflow(req, res);

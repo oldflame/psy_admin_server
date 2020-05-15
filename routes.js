@@ -104,7 +104,7 @@ exports = module.exports = (app) => {
   app.get('/api/account/imgCategory', imageCategoryService.getActiveImageCategories);
   app.get('/api/account/imgCategory/all', imageCategoryService.getAllImageCategories);
   app.post('/api/account/imgCategory', imageCategoryService.addNewCategory);
-  app.delete('/api/account/imgCategory/:imageCategoryID', imageCategoryService.deleteImageCategory);
+  app.delete('/api/account/imgCategory/:imageCategoryID/:doRestore', imageCategoryService.deleteImageCategory);
 
   // Image management routes
   app.post('/api/account/images', imageService.addImage);
