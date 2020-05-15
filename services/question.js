@@ -1,6 +1,6 @@
 var questionService = {
   getAllQuestions: (req, res) => {
-    req.app.db.models.Questions.find({ isDeleted: false }, (err, questions) => {
+    req.app.db.models.Questions.find({}, (err, questions) => {
       if (err) {
         console.log("Error", err);
         return res.json([]);
@@ -31,8 +31,8 @@ var questionService = {
       "validateData",
       () => {
         if (
-          !req.body.questionName ||
-          !req.body.questionName.toString().trim()
+          !req.body.name ||
+          !req.body.name.toString().trim()
         ) {
           return res.status(400).json({
             msg: "Question Name is required",
@@ -67,7 +67,7 @@ var questionService = {
       { _id: req.params.questionId },
       {
         $set: {
-          isDeleted: true,
+          isDeleted: !(req.params.doRestore == "restore"),
         },
       }
     ).exec((err, deleted) => {

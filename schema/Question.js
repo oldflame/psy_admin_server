@@ -2,7 +2,7 @@
 
 exports = module.exports = function (app, mongoose) {
     var QuestionSchema = new mongoose.Schema({
-        questionName: {
+        name: {
             type: String,
             required: true,
             trim: true,
