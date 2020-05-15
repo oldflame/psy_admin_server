@@ -118,7 +118,11 @@ var imageService = {
                 }
 
                 // Delete image temporarily stored on filesystem
-                fs.rmdir(`temp/${req.body.category}_${imageData._id}_${req.body.fileName}`)
+                fs.rmdir(`temp/${req.body.category}_${imageObject.imageData._id}_${req.body.fileName}`, (err, res) => {
+                    if (err) {
+                        console.log("fs err", err)
+                    }
+                })
                 return res.status(200).json(image)
             })
         });
