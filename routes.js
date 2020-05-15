@@ -6,6 +6,7 @@ var imageCategoryService = require("./services/imageCategory");
 var imageService = require("./services/image");
 var questionService = require("./services/question");
 var questionCategoryService = require("./services/questionCategory");
+var trainingService = require("./services/training");
 var jose = require('node-jose');
 var config = require('./config');
 
@@ -122,4 +123,10 @@ exports = module.exports = (app) => {
   app.get('/api/account/questionsCategory', questionCategoryService.getAllQuestionCategories);
   app.post('/api/account/addQuestionsCategory', questionCategoryService.addQuestionCategory);
   app.delete('/api/account/deleteQuestionCategory/:questionCategoryId', questionCategoryService.deleteQuestionCategory);
+
+
+  // Training Routes 
+  app.get('/api/account/getAllTrainings', trainingService.getAllTrainings);
+  app.post('/api/account/addTraining', trainingService.addNewTraining);
+  app.delete('/api/account/deleteTraining/:trainingId', trainingService.deleteTraining)
 };

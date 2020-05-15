@@ -9,4 +9,5 @@ exports = module.exports = (app, mongoose) => {
     require('./schema/ImageCategory')(app, mongoose);
     require('./schema/Question')(app,mongoose);
     require('./schema/QuestionCategory')(app,mongoose);
+    require('./schema/Trainings')(app,mongoose);
 };
