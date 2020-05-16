@@ -252,11 +252,11 @@ var locationService = {
                 });
             }
 
-            if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
-                return res.status(400).json({
-                    msg: "Marker is required"
-                });
-            }
+            // if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
+            //     return res.status(400).json({
+            //         msg: "Marker is required"
+            //     });
+            // }
 
             workflow.emit('checkEmailAvailable');
         });
