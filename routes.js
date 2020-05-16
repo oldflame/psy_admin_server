@@ -90,7 +90,7 @@ exports = module.exports = (app) => {
   app.get('/api/account/location', locationService.getActiveLocations);
   app.get('/api/account/location/all', locationService.getAllLocations);
   app.post('/api/account/location', locationService.addLocation);
-  app.delete('/api/account/location/:locationID', locationService.deleteLocation);
+  app.delete('/api/account/deleteLocation/:locationID/:doRestore', locationService.deleteLocation);
   app.put('/api/account/location', locationService.updateLocation);
 
   // Target Group Routes
