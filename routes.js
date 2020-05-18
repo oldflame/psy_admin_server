@@ -128,5 +128,5 @@ exports = module.exports = (app) => {
   // Training Routes 
   app.get('/api/account/getAllTrainings', trainingService.getAllTrainings);
   app.post('/api/account/addTraining', trainingService.addNewTraining);
-  app.delete('/api/account/deleteTraining/:trainingId', trainingService.deleteTraining)
+  app.delete('/api/account/deleteTraining/:trainingId/:doRestore', trainingService.deleteTraining)
 };

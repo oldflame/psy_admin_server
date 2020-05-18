@@ -1,6 +1,6 @@
 var trainingService = {
     getAllTrainings: (req, res) => {
-      req.app.db.models.Trainings.find({ isDeleted: false }, (err, trainings) => {
+      req.app.db.models.Trainings.find({}, (err, trainings) => {
         if (err) {
           console.log("Error", err);
           return res.json([]);
@@ -16,8 +16,8 @@ var trainingService = {
           "validateData",
           () => {
             if (
-              !req.body.trainingName ||
-              !req.body.trainingName.toString().trim()
+              !req.body.name ||
+              !req.body.name.toString().trim()
             ) {
               return res.status(400).json({
                 msg: "Training Name is required",
@@ -44,7 +44,7 @@ var trainingService = {
           { _id: req.params.trainingId },
           {
             $set: {
-              isDeleted: true,
+              isDeleted: !(req.params.doRestore == "restore"),
             },
           }
         ).exec((err, deleted) => {

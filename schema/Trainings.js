@@ -2,7 +2,7 @@
 
 exports = module.exports = function (app, mongoose) {
     var TrainingSchema = new mongoose.Schema({
-        trainingName: {
+        name: {
             type: String,
             required: true,
             trim: true,
