@@ -1,8 +1,8 @@
 const saltRounds = 10;
-var bcrypt = require("bcrypt");
-var _ = require("lodash");
-var jose = require('node-jose');
-var config = require('../config');
+let bcrypt = require("bcrypt");
+let _ = require("lodash");
+let jose = require('node-jose');
+let config = require('../config');
 
 const createAuthenticationToken = (data) => {
     return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ const createAuthenticationToken = (data) => {
     });
   }
 
-    var generateAuthToken = (user) => {
+    let generateAuthToken = (user) => {
       return new Promise((resolve, reject) => {
         createAuthenticationToken(user)
           .then(authorizationToken => {
@@ -39,18 +39,18 @@ const createAuthenticationToken = (data) => {
     };
 
     const validateEmail = (email) => {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
     const validatePhone = (mobile) => {
-      var re = /^\d{10}$/;
+      let re = /^\d{10}$/;
       return re.test(mobile);
     }
 
-    var authService = {
+    let authService = {
       login: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
           if (!req.body.email || !req.body.email.trim()) {
             return res.status(401).json({
@@ -143,7 +143,7 @@ const createAuthenticationToken = (data) => {
       },
 
       register: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
           if (!req.body.email || !req.body.email.trim()) {
             return res.status(400).json({
@@ -254,7 +254,7 @@ const createAuthenticationToken = (data) => {
 
         workflow.on("createAdminObject", () => {
           console.log('createAdminObject');
-          var admin = {
+          let admin = {
             email: req.body.email,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
