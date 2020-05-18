@@ -72,11 +72,11 @@ let locationService = {
                 });
             }
 
-            if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
-                return res.status(400).json({
-                    msg: "Marker is required"
-                });
-            }
+            // if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
+            //     return res.status(400).json({
+            //         msg: "Marker is required"
+            //     });
+            // }
 
             workflow.emit('checkEmailAvailable');
         });
@@ -252,11 +252,11 @@ let locationService = {
                 });
             }
 
-            if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
-                return res.status(400).json({
-                    msg: "Marker is required"
-                });
-            }
+            // if (!req.body.marker || !req.body.marker.latitude || !req.body.marker.longitude) {
+            //     return res.status(400).json({
+            //         msg: "Marker is required"
+            //     });
+            // }
 
             workflow.emit('checkEmailAvailable');
         });
@@ -356,7 +356,7 @@ let locationService = {
                 _id: req.params.locationID
             }, {
                 $set: {
-                    isDeleted: true
+                    isDeleted: !(req.params.doRestore == "restore")
                 }
             }).exec((err, deleted) => {
                 if (err) {

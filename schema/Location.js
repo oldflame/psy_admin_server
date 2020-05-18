@@ -36,7 +36,7 @@ exports = module.exports = function (app, mongoose) {
                 latitude: Number,
                 longitude: Number
             },
-            required: true
+            required: false
         },
         isDeleted: {
             type: Boolean,

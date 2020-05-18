@@ -7,6 +7,7 @@ let imageService = require("./services/image");
 let questionService = require("./services/question");
 let questionCategoryService = require("./services/questionCategory");
 let overviewService = require("./services/overview");
+var trainingService = require("./services/training");
 let jose = require('node-jose');
 let config = require('./config');
 
@@ -93,7 +94,7 @@ exports = module.exports = (app) => {
   app.get('/api/account/location', locationService.getActiveLocations);
   app.get('/api/account/location/all', locationService.getAllLocations);
   app.post('/api/account/location', locationService.addLocation);
-  app.delete('/api/account/location/:locationID', locationService.deleteLocation);
+  app.delete('/api/account/deleteLocation/:locationID/:doRestore', locationService.deleteLocation);
   app.put('/api/account/location', locationService.updateLocation);
 
   // Target Group Routes
@@ -119,11 +120,17 @@ exports = module.exports = (app) => {
   app.get('/api/account/questions', questionService.getAllQuestions);
   app.get('/api/account/questions/:questioncategory', questionService.getQuestionsForCategory);
   app.post('/api/account/addQuestion', questionService.addNewQuestion);
-  app.delete('/app/account/deleteQuestion/:questionId', questionService.deleteQuestion);
+  app.delete('/app/account/deleteQuestion/:questionId/:doRestore', questionService.deleteQuestion);
 
 
   // Question Category Routes 
   app.get('/api/account/questionsCategory', questionCategoryService.getAllQuestionCategories);
   app.post('/api/account/addQuestionsCategory', questionCategoryService.addQuestionCategory);
-  app.delete('/api/account/deleteQuestionCategory/:questionCategoryId', questionCategoryService.deleteQuestionCategory);
+  app.delete('/api/account/deleteQuestionCategory/:questionCategoryId/:doRestore', questionCategoryService.deleteQuestionCategory);
+
+
+  // Training Routes 
+  app.get('/api/account/getAllTrainings', trainingService.getAllTrainings);
+  app.post('/api/account/addTraining', trainingService.addNewTraining);
+  app.delete('/api/account/deleteTraining/:trainingId', trainingService.deleteTraining)
 };

@@ -1,8 +1,9 @@
 "use strict";
 
 exports = module.exports = function (app, mongoose) {
-    let QuestionSchema = new mongoose.Schema({
-        questionName: {
+
+    var QuestionSchema = new mongoose.Schema({
+        name: {
             type: String,
             required: true,
             trim: true,
