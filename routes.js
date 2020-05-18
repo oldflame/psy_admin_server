@@ -1,13 +1,14 @@
-var authService = require("./services/auth");
-var adminService = require("./services/admin");
-var locationService = require("./services/location");
-var targetGroupService = require("./services/targetGroups");
-var imageCategoryService = require("./services/imageCategory");
-var imageService = require("./services/image");
-var questionService = require("./services/question");
-var questionCategoryService = require("./services/questionCategory");
-var jose = require('node-jose');
-var config = require('./config');
+let authService = require("./services/auth");
+let adminService = require("./services/admin");
+let locationService = require("./services/location");
+let targetGroupService = require("./services/targetGroups");
+let imageCategoryService = require("./services/imageCategory");
+let imageService = require("./services/image");
+let questionService = require("./services/question");
+let questionCategoryService = require("./services/questionCategory");
+let overviewService = require("./services/overview");
+let jose = require('node-jose');
+let config = require('./config');
 
 function verifyAuthorizationToken(token) {
   console.log('inside middlewares/authentication/verifyauthtoken', config.JWEKeySet.keys[0], token)
@@ -81,6 +82,9 @@ exports = module.exports = (app) => {
   // Authorized Requests
   app.all('/api/account/*', authenticate);
 
+  // Overview Routes
+  app.get('/api/account/overview/counts', overviewService.getEntityCounts)
+
   // Admin Routes
   app.get('/api/account/admin', adminService.getAllAdmins);
   app.put('/api/account/admin/approveAdmin/:newAdminID', adminService.approveNewAdmin);
@@ -109,7 +113,7 @@ exports = module.exports = (app) => {
   app.post('/api/account/images', imageService.addImage);
   app.get('/api/account/images/all/:skip/:limit', imageService.getAllImages);
   app.get('/api/account/images/:skip/:limit', imageService.getActiveImages);
-  app.delete('/api/account/images/:imageID', imageService.deleteImage);
+  app.delete('/api/account/images/:imageID/:doRestore', imageService.deleteImage);
 
   // Question Routes 
   app.get('/api/account/questions', questionService.getAllQuestions);

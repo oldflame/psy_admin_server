@@ -1,16 +1,16 @@
 const validateEmail = (email) => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
 const validatePhone = (mobile) => {
-    var re = /^\d{10}$/;
+    let re = /^\d{10}$/;
     return re.test(mobile);
 }
 
-var locationService = {
+let locationService = {
     addLocation: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.body.email || !req.body.email.trim()) {
                 return res.status(400).json({
@@ -184,7 +184,7 @@ var locationService = {
     },
 
     updateLocation: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.body._id || !req.body._id.trim()) {
                 return res.status(400).json({
@@ -340,7 +340,7 @@ var locationService = {
     },
 
     deleteLocation: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.params.locationID || !req.params.locationID.toString().trim()) {
                 return res.status(400).json({

@@ -1,7 +1,7 @@
-var jose = require('node-jose');
+let jose = require('node-jose');
 const keystore = jose.JWK.createKeyStore();
 const config = require('./config');
-var props = {
+let props = {
     alg: 'A256GCM',
     use: 'enc'
 };

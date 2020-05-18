@@ -1,7 +1,7 @@
 "use strict";
 
 exports = module.exports = function (app, mongoose) {
-    var ImageCategorySchema = new mongoose.Schema({
+    let ImageCategorySchema = new mongoose.Schema({
         name: {
             type: String,
             required: true,

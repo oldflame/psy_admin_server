@@ -1,6 +1,6 @@
-var targetGroupsService = {
+let targetGroupsService = {
     addTargetGroup: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.body.name || !req.body.name.trim()) {
                 return res.status(400).json({
@@ -68,7 +68,7 @@ var targetGroupsService = {
     },
 
     deleteTargetGroup: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.params.targetGroupID || !req.params.targetGroupID.trim()) {
                 return res.status(400).json({
@@ -109,7 +109,7 @@ var targetGroupsService = {
     },
 
     assignTraining: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.params.targetGroupID || !req.body.targetGroupID.trim()) {
                 return res.status(400).json({
