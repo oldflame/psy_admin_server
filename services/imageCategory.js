@@ -1,6 +1,6 @@
-var imageCategory = {
+let imageCategory = {
     addNewCategory: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.body.name || !req.body.name.trim()) {
                 return res.status(400).json({
@@ -80,7 +80,7 @@ var imageCategory = {
     },
 
     deleteImageCategory: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.params.imageCategoryID || !req.params.imageCategoryID.toString().trim()) {
                 return res.status(400).json({

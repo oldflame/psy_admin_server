@@ -1,7 +1,7 @@
 "use strict";
 
 exports = module.exports = function (app, mongoose) {
-  var AdminSchema = new mongoose.Schema({
+  let AdminSchema = new mongoose.Schema({
     email: {
       type: String,
       unique: true,

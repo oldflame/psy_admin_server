@@ -1,4 +1,4 @@
-var questionService = {
+let questionService = {
   getAllQuestions: (req, res) => {
     req.app.db.models.Questions.find({}, (err, questions) => {
       if (err) {
@@ -26,7 +26,7 @@ var questionService = {
   },
 
   addNewQuestion: (req, res) => {
-    var workflow = req.app.utility.workflow(req, res);
+    let workflow = req.app.utility.workflow(req, res);
     workflow.on(
       "validateData",
       () => {

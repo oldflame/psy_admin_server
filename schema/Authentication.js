@@ -1,7 +1,7 @@
 "use strict";
 
 exports = module.exports = function (app, mongoose) {
-  var AuthenticationSchema = new mongoose.Schema({
+  let AuthenticationSchema = new mongoose.Schema({
     userId: {
       type: String,
       unique: true,

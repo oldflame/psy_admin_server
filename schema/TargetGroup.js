@@ -1,7 +1,7 @@
 "use strict";
 
 exports = module.exports = function (app, mongoose) {
-    var TargetGroupSchema = new mongoose.Schema({
+    let TargetGroupSchema = new mongoose.Schema({
         name: {
             type: String,
             required: true,

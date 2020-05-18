@@ -1,4 +1,4 @@
-var adminService = {
+let adminService = {
   getAllAdmins: (req, res) => {
     req.app.db.models.Admin.find({}, 'email firstName lastName isActive isVerified mobile createdAt approvedAt approvedBy').exec((err, admins) => {
       if (err) {
@@ -14,7 +14,7 @@ var adminService = {
 
   approveNewAdmin: (req, res) => {
     console.log("Approving admin", req.params)
-    var workflow = req.app.utility.workflow(req, res);
+    let workflow = req.app.utility.workflow(req, res);
     workflow.on('validateData', () => {
       if (!req.params.newAdminID) {
         return res.status(400).json({

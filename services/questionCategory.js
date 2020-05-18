@@ -1,4 +1,4 @@
-var questionCategoryService = {
+let questionCategoryService = {
   addQuestionCategory: (req, res) => {
     req.app.db.models.QuestionCategory.create(
       req.body,

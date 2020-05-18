@@ -1,10 +1,10 @@
-var firebaseAdmin = require('firebase-admin');
-var stream = require('stream');
-var fs = require('fs')
+let firebaseAdmin = require('firebase-admin');
+let stream = require('stream');
+let fs = require('fs')
 
-var imageService = {
+let imageService = {
     addImage: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             console.log("Req", req.body.intensity)
             if (!req.body.name || !req.body.name.trim()) {
@@ -52,7 +52,7 @@ var imageService = {
         });
 
         workflow.on('addMetaDataToDB', () => {
-            var imageMetaData = {
+            let imageMetaData = {
                 name: req.body.name,
                 description: req.body.description,
                 tags: req.body.tags,
@@ -155,7 +155,7 @@ var imageService = {
         }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit)).populate('category')
     },
     deleteImage: (req, res) => {
-        var workflow = req.app.utility.workflow(req, res);
+        let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
             if (!req.params.imageID || !req.params.imageID.toString().trim()) {
                 return res.status(400).json({
@@ -171,7 +171,7 @@ var imageService = {
                 _id: req.params.imageID
             }, {
                 $set: {
-                    isDeleted: true
+                    isDeleted: !(req.params.doRestore == "restore")
                 }
             }).exec((err, deleted) => {
                 if (err) {
