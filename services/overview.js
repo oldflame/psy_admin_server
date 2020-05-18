@@ -3,7 +3,7 @@ let overviewServices = {
         let workflow = req.app.utility.workflow(req, res);
         let adminCount, imageCategoriesCount, imagesCount, locationsCount, questionCategoriesCount, questionsCount, targetGroupsCount, trainingsCount;
         workflow.on('getAdminCount', () => {
-            req.app.db.models.Admin.countDocuments({}, (err, count) => {
+            req.app.db.models.Admin.countDocuments({isActive: true}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -16,7 +16,7 @@ let overviewServices = {
         })
 
         workflow.on('getImageCategoriesCount', () => {
-            req.app.db.models.ImageCategory.countDocuments({}, (err, count) => {
+            req.app.db.models.ImageCategory.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -29,7 +29,7 @@ let overviewServices = {
         })
 
         workflow.on('getImagesCount', () => {
-            req.app.db.models.Image.countDocuments({}, (err, count) => {
+            req.app.db.models.Image.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -42,7 +42,7 @@ let overviewServices = {
         })
 
         workflow.on('getLocationsCount', () => {
-            req.app.db.models.Location.countDocuments({}, (err, count) => {
+            req.app.db.models.Location.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -55,7 +55,7 @@ let overviewServices = {
         })
 
         workflow.on('getQuestionCategoriesCount', () => {
-            req.app.db.models.QuestionCategory.countDocuments({}, (err, count) => {
+            req.app.db.models.QuestionCategory.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -68,7 +68,7 @@ let overviewServices = {
         })
 
         workflow.on('getQuestionsCount', () => {
-            req.app.db.models.Questions.countDocuments({}, (err, count) => {
+            req.app.db.models.Questions.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -81,7 +81,7 @@ let overviewServices = {
         })
 
         workflow.on('getTargetGroupsCount', () => {
-            req.app.db.models.TargetGroup.countDocuments({}, (err, count) => {
+            req.app.db.models.TargetGroup.countDocuments({isDeleted: false}, (err, count) => {
                 if (err) {
                     return res.status(400).json({
                         msg: "Failed to fetch overview data!"
@@ -89,22 +89,22 @@ let overviewServices = {
                 }
 
                 targetGroupsCount = count;
-                workflow.emit('sendResponse');
+                workflow.emit('getTrainingsCount');
             })
         })
 
-        // workflow.on('getTrainingsCount', () => {
-        //     req.app.db.models.Trainings.countDocuments({}, (err, count) => {
-        //         if (err) {
-        //             return res.status(400).json({
-        //                 msg: "Failed to fetch overview data!"
-        //             });
-        //         }
+        workflow.on('getTrainingsCount', () => {
+            req.app.db.models.Trainings.countDocuments({isDeleted: false}, (err, count) => {
+                if (err) {
+                    return res.status(400).json({
+                        msg: "Failed to fetch overview data!"
+                    });
+                }
 
-        //         trainingsCount = count;
-        //         workflow.emit('sendResponse');
-        //     })
-        // })
+                trainingsCount = count;
+                workflow.emit('sendResponse');
+            })
+        })
 
         workflow.on('sendResponse', () => {
             const counts = {
