@@ -23,11 +23,11 @@ let targetGroupsService = {
                 description: req.body.description,
                 tags: req.body.tags,
                 location: req.body.location,
-                trainings: req.body.training ? [req.body.training] : [],
+                trainings: req.body.trainings ? [req.body.trainings] : [],
             }
             req.app.db.models.TargetGroup.create(targetGroup, (err, targetGroup) => {
                 if (err) {
-                    console.log("Create location err", err);
+                    console.log("Create target group err", err);
                     return res.status(400).json({
                         msg: "Failed to add target group. Try again!"
                     })
@@ -70,7 +70,7 @@ let targetGroupsService = {
     deleteTargetGroup: (req, res) => {
         let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
-            if (!req.params.targetGroupID || !req.params.targetGroupID.trim()) {
+            if (!req.params.targetGroupID || !req.params.targetGroupID.toString().trim()) {
                 return res.status(400).json({
                     msg: "Target Group ID is required"
                 });
@@ -84,7 +84,7 @@ let targetGroupsService = {
                 _id: req.params.targetGroupID
             }, {
                 $set: {
-                    isDeleted: true
+                    isDeleted: !(req.params.doRestore == "restore")
                 }
             }).exec((err, deleted) => {
                 if (err) {
@@ -117,11 +117,11 @@ let targetGroupsService = {
                 });
             }
 
-            if (!req.body.trainingID || !req.body.trainingID.trim()) {
-                return res.status(400).json({
-                    msg: "training ID is required"
-                });
-            }
+            // if (!req.body.trainingID || !req.body.trainingID.trim()) {
+            //     return res.status(400).json({
+            //         msg: "training ID is required"
+            //     });
+            // }
 
             workflow.emit('addTrainingToTargetGroup');
         });
