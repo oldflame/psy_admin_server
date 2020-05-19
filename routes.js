@@ -96,9 +96,9 @@ exports = module.exports = (app) => {
   // Target Group Routes
   app.get('/api/account/targetGroups', targetGroupService.getActiveTargetGroups);
   app.get('/api/account/targetGroups/all', targetGroupService.getAllTargetGroups);
-  app.post('/api/account/targetGroups', targetGroupService.addTargetGroup);
+  app.post('/api/account/addTargetGroups', targetGroupService.addTargetGroup);
   app.put('/api/account/targetGroups/assignTraining/:targetGroupID/:trainingID', targetGroupService.assignTraining);
-  app.delete('/api/account/targetGroups/:targetGroupID', targetGroupService.deleteTargetGroup);
+  app.delete('/api/account/deleteTargetGroups/:targetGroupID/:doRestore', targetGroupService.deleteTargetGroup);
 
   // Image Category Routes
   app.get('/api/account/imgCategory', imageCategoryService.getActiveImageCategories);
@@ -128,5 +128,5 @@ exports = module.exports = (app) => {
   // Training Routes 
   app.get('/api/account/getAllTrainings', trainingService.getAllTrainings);
   app.post('/api/account/addTraining', trainingService.addNewTraining);
-  app.delete('/api/account/deleteTraining/:trainingId', trainingService.deleteTraining)
+  app.delete('/api/account/deleteTraining/:trainingId/:doRestore', trainingService.deleteTraining)
 };
