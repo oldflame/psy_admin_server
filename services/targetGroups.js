@@ -84,7 +84,7 @@ var targetGroupsService = {
                 _id: req.params.targetGroupID
             }, {
                 $set: {
-                    isDeleted: true
+                    isDeleted: !(req.params.doRestore == "restore")
                 }
             }).exec((err, deleted) => {
                 if (err) {
