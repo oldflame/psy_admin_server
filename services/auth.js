@@ -35,7 +35,6 @@ const createAuthenticationToken = (data) => {
             reject(error);
           });
       });
-
     };
 
     const validateEmail = (email) => {
@@ -49,7 +48,7 @@ const createAuthenticationToken = (data) => {
     }
 
     let authService = {
-      login: (req, res) => {
+      adminLogin: (req, res) => {
         let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
           if (!req.body.email || !req.body.email.trim()) {
@@ -142,7 +141,7 @@ const createAuthenticationToken = (data) => {
         workflow.emit('validateData');
       },
 
-      register: (req, res) => {
+      adminRegister: (req, res) => {
         let workflow = req.app.utility.workflow(req, res);
         workflow.on('validateData', () => {
           if (!req.body.email || !req.body.email.trim()) {
@@ -332,6 +331,92 @@ const createAuthenticationToken = (data) => {
           })
         })
         workflow.emit("validateData");
-      }
+      },
+
+      loginUser: (req, res) => {
+        let workflow = req.app.utility.workflow(req, res);
+        workflow.on('validateData', () => {
+          if (!req.body.email || !req.body.email.trim()) {
+            return res.status(401).json({
+              msg: "Email is required"
+            });
+          }
+
+          if (!validateEmail(req.body.email)) {
+            return res.status(401).json({
+              msg: "Email or password is invalid."
+            });
+          }
+
+          if (!req.body.password) {
+            return res.status(401).json({
+              msg: "Password is required"
+            });
+          }
+
+          if (req.body.password.length < 8) {
+            return res.status(401).json({
+              msg: "Email or password is invalid."
+            });
+          }
+
+          workflow.emit('findUser')
+        });
+
+        workflow.on('findUser', () => {
+          req.app.db.models.User.findOne({
+            email: req.body.email,
+            isActive: true
+          }).populate('password', 'passwordHash').exec((err, user) => {
+            if (err) {
+              console.log("Find user err: ", err);
+              return res.status(401).json({
+                msg: "Login Failed. Email or password is invalid."
+              })
+            }
+
+            if (!user) {
+              console.log("Find user: ", user);
+              return res.status(401).json({
+                msg: "Login Failed. Email or password is invalid or your account has been deactivated."
+              })
+            }
+
+            if (!user.isActive) {
+              console.log("Find user: ", user);
+              return res.status(401).json({
+                msg: "Login Failed. Email or password is invalid or your account has been deactivated."
+              })
+            }
+
+            workflow.emit('checkUserPassword', user);
+          })
+        })
+
+        workflow.on('checkUserPassword', (user) => {
+          bcrypt.compare(req.body.password, user.password.passwordHash, (err, result) => {
+            if (err) {
+              console.log("In bcrtpt error", err);
+              return res.status(401).json({
+                msg: "Login Failed. Email or password is invalid."
+              });
+            }
+            console.log("In bcrypt result", JSON.stringify(user));
+            if (result) {
+              const formattedUser = JSON.parse(JSON.stringify(user));
+              delete formattedUser.password;
+              console.log("Post delete pass", formattedUser)
+              generateAuthToken(formattedUser).then((userData) => {
+                return res.status(200).json(userData);
+              });
+            } else {
+              return res.status(401).json({
+                msg: "Login Failed. Email or password is invalid."
+              });
+            }
+          });
+        })
+        workflow.emit('validateData');
+      },
     };
     module.exports = authService;

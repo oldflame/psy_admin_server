@@ -77,8 +77,11 @@ exports = module.exports = (app) => {
   })
 
   // Unverified Requests
-  app.post('/api/register', authService.register);
-  app.post('/api/login', authService.login);
+  app.post('/api/register', authService.adminRegister);
+  app.post('/api/login', authService.adminLogin);
+
+  app.post('/api/user/register', authService.registerUser);
+  app.post('/api/user/login', authService.loginUser);
 
   // Authorized Requests
   app.all('/api/account/*', authenticate);
