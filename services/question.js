@@ -11,7 +11,8 @@ let questionService = {
   },
 
   getQuestionsForCategory: (req, res) => {
-    const category = req.params["questionCategory"];
+    const category = req.params["questioncategory"];
+    console.log("CATEGORY",category);
     req.app.db.models.Questions.find(
       { questionCategory: category },
       (err, questions) => {

@@ -22,22 +22,24 @@ exports = module.exports = function (app, mongoose) {
             trim: true,
         },
         
-        questionData: [{
-            question: {
+        questionData: {
+            category: {
                 type: mongoose.Schema.Types.ObjectId,
                 trim: true,
-                ref: 'Question'
+                ref: 'QuestionCategory'
             },
             order: Number
-        }],
-        imageData: [{
-            question: {
+        },
+        imageData: {
+            category: {
                 type: mongoose.Schema.Types.ObjectId,
                 trim: true,
-                ref: 'Question'
+                ref: 'ImageCategory'
             },
-            order: Number
-        }],
+            count: Number,
+            duration: Number,
+            imageType: Number
+        },
         scheduleFor: Date,
 
     }, {
