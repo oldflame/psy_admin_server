@@ -133,9 +133,9 @@ exports = module.exports = (app) => {
   app.get('/api/account/trainings/getAllTrainings', trainingService.getAllTrainings);
   app.get('/api/account/trainings/:trainingId', trainingService.findById);
   app.post('/api/account/trainings/addTraining', trainingService.addNewTraining);
-  app.delete('/api/account/trainings/:trainingId/:doRestore', trainingService.deleteTraining)
-  app.put('api/account/updateImagesInTraining/:trainingId', trainingService.updateImagesInTraining);
-  app.put("/api/account/trainings/:trainingId/assignQuestions", trainingService.updateQuestionsInTraining)
-  app.put("/api/account/trainings/:trainingId/assignImages", trainingService.updateImagesInTraining)
-
+  app.delete('/api/account/trainings/:trainingId/:doRestore', trainingService.deleteTraining);
+  app.put("/api/account/trainings/:trainingId/assignQuestions", trainingService.addQuestionsToTraining);
+  app.delete("/api/account/trainings/:trainingId/removeQuestions/:questionDataId", trainingService.removeQuestionsFromTraining);
+  app.put("/api/account/trainings/:trainingId/assignImages", trainingService.addImagesToTraining);
+  app.delete("/api/account/trainings/:trainingId/removeImages/:imageDataId", trainingService.removeImagesFromTraining);
 };

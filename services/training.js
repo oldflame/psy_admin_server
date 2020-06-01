@@ -77,7 +77,7 @@ var trainingService = {
     });
   },
 
-  updateQuestionsInTraining: (req, res) => {
+  addQuestionsToTraining: (req, res) => {
     req.app.db.models.Trainings.update(
       { _id: req.params.trainingId },
       {
@@ -102,7 +102,32 @@ var trainingService = {
     });
   },
 
-  updateImagesInTraining: (req, res) => {
+  removeQuestionsFromTraining: (req, res) => {
+    req.app.db.models.Trainings.update(
+      { _id: req.params.trainingId },
+      {
+        $pull: {
+          questionData: {_id: req.params.questionDataId},
+        },
+      }
+    ).exec((err, updatedQuestions) => {
+      if (err) {
+        return res.status(400).json({
+          msg: "Failed to udpate Training. Try again!",
+        });
+      }
+
+      if (!updatedQuestions) {
+        console.log("Update Training err", err);
+        return res.status(400).json({
+          msg: "Failed to update Training. Try again!",
+        });
+      }
+      return res.status(200).json();
+    });
+  },
+
+  addImagesToTraining: (req, res) => {
     req.app.db.models.Trainings.update(
       { _id: req.params.trainingId },
       {
@@ -125,6 +150,31 @@ var trainingService = {
         });
       }
 
+      return res.status(200).json();
+    });
+  },
+
+  removeImagesFromTraining: (req, res) => {
+    req.app.db.models.Trainings.update(
+      { _id: req.params.trainingId },
+      {
+        $pull: {
+          imageData: {_id: req.params.imageDataId},
+        },
+      }
+    ).exec((err, updatedQuestions) => {
+      if (err) {
+        return res.status(400).json({
+          msg: "Failed to udpate Training. Try again!",
+        });
+      }
+
+      if (!updatedQuestions) {
+        console.log("Update Training err", err);
+        return res.status(400).json({
+          msg: "Failed to update Training. Try again!",
+        });
+      }
       return res.status(200).json();
     });
   },
