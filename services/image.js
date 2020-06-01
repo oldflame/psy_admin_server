@@ -82,6 +82,12 @@ let imageService = {
             bufferStream.end(new Buffer.from(req.body.content, 'base64'));
             const defaultBucket = firebaseAdmin.storage().bucket('pysch-changiz.appspot.com');
 
+            var tempDir = 'temp';
+
+            if (!fs.existsSync(tempDir)) {
+                fs.mkdirSync(tempDir);
+            }
+
             // Temporarily create image file on filesystem
             fs.writeFile(`temp/${req.body.category}_${imageData._id}_${req.body.fileName}`, req.body.content, 'base64', (err, res) => {
                 if (err) {
@@ -99,7 +105,10 @@ let imageService = {
                 }
             }).then((files) => {
                 console.log("File uploaded", files[0].metadata.mediaLink)
-                workflow.emit('addImageURLToDB', {imageData, url: files[0].metadata.mediaLink});
+                workflow.emit('addImageURLToDB', {
+                    imageData,
+                    url: files[0].metadata.mediaLink
+                });
             }).catch((err) => {
                 console.log("File upload err", err)
                 res.status(400).json({
@@ -109,7 +118,15 @@ let imageService = {
         });
 
         workflow.on('addImageURLToDB', (imageObject) => {
-            req.app.db.models.Image.findOneAndUpdate({_id: imageObject.imageData._id}, {$set: {url: imageObject.url}},{new: true}, (err, image) => {
+            req.app.db.models.Image.findOneAndUpdate({
+                _id: imageObject.imageData._id
+            }, {
+                $set: {
+                    url: imageObject.url
+                }
+            }, {
+                new: true
+            }, (err, image) => {
                 if (err) {
                     console.log("Update image url err", err);
                     return res.status(400).json({
@@ -129,7 +146,7 @@ let imageService = {
 
         workflow.emit('validateData');
     },
-    
+
     getAllImages: (req, res) => {
         req.app.db.models.Image.find({}, (err, images) => {
             if (err) {
@@ -143,7 +160,9 @@ let imageService = {
         }).skip(parseInt(req.params.skip)).limit(parseInt(req.params.limit)).populate('category')
     },
     getActiveImages: (req, res) => {
-        req.app.db.models.Image.find({isDeleted: false}, (err, images) => {
+        req.app.db.models.Image.find({
+            isDeleted: false
+        }, (err, images) => {
             if (err) {
                 console.log('Get images err', err);
                 res.status(400).json({
