@@ -22,16 +22,12 @@ exports = module.exports = (app, mongoose) => {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Authentication'
         },
-        mobile: {
-            type: String,
-            required: true,
-        },
         birthdate: {
             type: Date,
             required: true
         },
         ethnicity: {
-            type: string
+            type: String
         },
         isActive: {
             type: Boolean,
@@ -45,8 +41,7 @@ exports = module.exports = (app, mongoose) => {
     });
 
     UserSchema.index({
-        email: 1,
-        phone: 1
+        email: 1
     }, {
         unique: true
     });
