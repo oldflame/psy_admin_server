@@ -28,7 +28,7 @@ exports = module.exports = function (app, mongoose) {
                 trim: true,
                 ref: 'QuestionCategory'
             },
-            order: Number
+            orderNumber: Number
         },
         imageData: {
             category: {
@@ -36,9 +36,10 @@ exports = module.exports = function (app, mongoose) {
                 trim: true,
                 ref: 'ImageCategory'
             },
-            count: Number,
+            quantity: Number,
             duration: Number,
-            imageType: Number
+            imageType: Number,
+            orderNumber: Number
         },
         scheduleFor: Date,
 

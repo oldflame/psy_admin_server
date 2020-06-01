@@ -7,9 +7,7 @@ var trainingService = {
       }
       console.log("All trainings: ", trainings);
       return res.status(200).json(trainings);
-    })
-      .populate("imageData")
-      .populate("questionData");
+    }).populate({path: 'questionData.category'}).populate({path: 'imageData.category'})
   },
 
   findById: (req, res) => {
@@ -23,7 +21,7 @@ var trainingService = {
         console.log("training by ID: ", training);
         return res.status(200).json(training);
       }
-    );
+    ).populate({path: 'questionData.category'}).populate({path: 'imageData.category'});
   },
 
   addNewTraining: (req, res) => {
