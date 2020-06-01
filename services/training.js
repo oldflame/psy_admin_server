@@ -81,7 +81,7 @@ var trainingService = {
     req.app.db.models.Trainings.update(
       { _id: req.params.trainingId },
       {
-        $set: {
+        $push: {
           questionData: req.body,
         },
       }
@@ -106,7 +106,7 @@ var trainingService = {
     req.app.db.models.Trainings.update(
       { _id: req.params.trainingId },
       {
-        $set: {
+        $push: {
           imageData: req.body,
         },
       }
