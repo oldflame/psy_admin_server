@@ -15,6 +15,7 @@ let express = require('express'),
 
 let app = express();
 
+let env = process.env.NODE_ENV || 'development';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,8 +41,7 @@ keygen.generate().then(() => {
 });
 
 //setup mongoose
-// app.db = mongoose.createConnection(config.mongodb.devUri);
-app.db = mongoose.createConnection(config.mongodb.prodUri);
+app.db = mongoose.createConnection(env === 'development' ? config.mongodb.devUri : config.mongodb.prodUri);
 app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', () => {
   //and... we have a data store
