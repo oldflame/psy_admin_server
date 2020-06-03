@@ -378,7 +378,7 @@ const createAuthenticationToken = (data) => {
             if (!user) {
               console.log("Find user: ", user);
               return res.status(401).json({
-                msg: "Login Failed. Email or password is invalid or your account has been deactivated."
+                msg: "Login Failed. Email or password is invalid."
               })
             }
 
