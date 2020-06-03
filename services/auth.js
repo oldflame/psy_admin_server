@@ -446,7 +446,7 @@ const createAuthenticationToken = (data) => {
             });
           }
 
-          if (req.body.gender && (req.body.gender != 'M' && req.body.gender != 'F' && req.body.gender != 'O')) {
+          if (req.body.gender && (req.body.gender != 'M' && req.body.gender != 'F' && req.body.gender != 'O' && req.body.gender != 'N/A')) {
             return res.status(400).json({
               msg: `Gender invalid. Expected one of M, F or O saw ${req.body.gender}`
             });
@@ -504,6 +504,7 @@ const createAuthenticationToken = (data) => {
             gender: req.body.gender,
             birthdate: req.body.birthdate,
             ethnicity: req.body.ethnicity,
+            race: req.body.race,
           };
 
           bcrypt.hash(req.body.password, saltRounds, (err, hash) => {

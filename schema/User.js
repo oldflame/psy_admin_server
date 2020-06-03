@@ -26,8 +26,17 @@ exports = module.exports = (app, mongoose) => {
             type: Date,
             required: true
         },
+        gender: {
+            type: String,
+            enum: ['M', 'F', 'O']
+        },
         ethnicity: {
-            type: String
+            type: Number,
+            default: -1
+        },
+        race: {
+            type: Number,
+            default: -1
         },
         isActive: {
             type: Boolean,

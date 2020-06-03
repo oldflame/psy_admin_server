@@ -34,6 +34,10 @@ exports = module.exports = function (app, mongoose) {
       type: Boolean,
       default: false
     },
+    gender: {
+      type: String,
+      enum: ['M', 'F', 'O']
+    },
     approvedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Admin'
