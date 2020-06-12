@@ -141,4 +141,8 @@ exports = module.exports = (app) => {
   app.delete("/api/account/trainings/:trainingId/removeQuestions/:questionDataId", trainingService.removeQuestionsFromTraining);
   app.put("/api/account/trainings/:trainingId/assignImages", trainingService.addImagesToTraining);
   app.delete("/api/account/trainings/:trainingId/removeImages/:imageDataId", trainingService.removeImagesFromTraining);
+
+  // User App routes
+
+  app.get('/api/account/user/trainings/random', trainingService.getRandomTraining);
 };

@@ -178,6 +178,20 @@ var trainingService = {
       return res.status(200).json();
     });
   },
+
+  // User app services
+
+  getRandomTraining: (req, res) => {
+    req.app.db.models.Trainings.aggregate([{ $sample: {size: 1} }], (err, trainings) => {
+      if (err) {
+        return res.status(400).json({
+          msg: "Failed to get training. Try again!",
+        });
+      }
+
+      return res.status(200).json(trainings[0]);
+    });
+  }
 };
 module.exports = trainingService;
  
