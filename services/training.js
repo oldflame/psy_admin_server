@@ -7,12 +7,17 @@ var trainingService = {
       }
       console.log("All trainings: ", trainings);
       return res.status(200).json(trainings);
-    }).populate({path: 'questionData.category'}).populate({path: 'imageData.category'})
+    }).populate({
+      path: 'questionData.category'
+    }).populate({
+      path: 'imageData.category'
+    })
   },
 
   findById: (req, res) => {
-    req.app.db.models.Trainings.findOne(
-      { _id: req.params.trainingId },
+    req.app.db.models.Trainings.findOne({
+        _id: req.params.trainingId
+      },
       (err, training) => {
         if (err) {
           console.log("Error", err);
@@ -21,7 +26,11 @@ var trainingService = {
         console.log("training by ID: ", training);
         return res.status(200).json(training);
       }
-    ).populate({path: 'questionData.category'}).populate({path: 'imageData.category'});
+    ).populate({
+      path: 'questionData.category'
+    }).populate({
+      path: 'imageData.category'
+    });
   },
 
   addNewTraining: (req, res) => {
@@ -51,14 +60,13 @@ var trainingService = {
   },
 
   deleteTraining: (req, res) => {
-    req.app.db.models.Trainings.update(
-      { _id: req.params.trainingId },
-      {
-        $set: {
-          isDeleted: !(req.params.doRestore == "restore"),
-        },
-      }
-    ).exec((err, deleted) => {
+    req.app.db.models.Trainings.update({
+      _id: req.params.trainingId
+    }, {
+      $set: {
+        isDeleted: !(req.params.doRestore == "restore"),
+      },
+    }).exec((err, deleted) => {
       if (err) {
         console.log("Delete Training err", err);
         return res.status(400).json({
@@ -78,14 +86,13 @@ var trainingService = {
   },
 
   addQuestionsToTraining: (req, res) => {
-    req.app.db.models.Trainings.update(
-      { _id: req.params.trainingId },
-      {
-        $push: {
-          questionData: req.body,
-        },
-      }
-    ).exec((err, updatedQuestions) => {
+    req.app.db.models.Trainings.update({
+      _id: req.params.trainingId
+    }, {
+      $push: {
+        questionData: req.body,
+      },
+    }).exec((err, updatedQuestions) => {
       if (err) {
         return res.status(400).json({
           msg: "Failed to udpate Training. Try again!",
@@ -103,14 +110,15 @@ var trainingService = {
   },
 
   removeQuestionsFromTraining: (req, res) => {
-    req.app.db.models.Trainings.update(
-      { _id: req.params.trainingId },
-      {
-        $pull: {
-          questionData: {_id: req.params.questionDataId},
+    req.app.db.models.Trainings.update({
+      _id: req.params.trainingId
+    }, {
+      $pull: {
+        questionData: {
+          _id: req.params.questionDataId
         },
-      }
-    ).exec((err, updatedQuestions) => {
+      },
+    }).exec((err, updatedQuestions) => {
       if (err) {
         return res.status(400).json({
           msg: "Failed to udpate Training. Try again!",
@@ -128,14 +136,13 @@ var trainingService = {
   },
 
   addImagesToTraining: (req, res) => {
-    req.app.db.models.Trainings.update(
-      { _id: req.params.trainingId },
-      {
-        $push: {
-          imageData: req.body,
-        },
-      }
-    ).exec((err, updatedImages) => {
+    req.app.db.models.Trainings.update({
+      _id: req.params.trainingId
+    }, {
+      $push: {
+        imageData: req.body,
+      },
+    }).exec((err, updatedImages) => {
       if (err) {
         console.log("Update Training err", err);
         return res.status(400).json({
@@ -155,14 +162,15 @@ var trainingService = {
   },
 
   removeImagesFromTraining: (req, res) => {
-    req.app.db.models.Trainings.update(
-      { _id: req.params.trainingId },
-      {
-        $pull: {
-          imageData: {_id: req.params.imageDataId},
+    req.app.db.models.Trainings.update({
+      _id: req.params.trainingId
+    }, {
+      $pull: {
+        imageData: {
+          _id: req.params.imageDataId
         },
-      }
-    ).exec((err, updatedQuestions) => {
+      },
+    }).exec((err, updatedQuestions) => {
       if (err) {
         return res.status(400).json({
           msg: "Failed to udpate Training. Try again!",
@@ -178,20 +186,5 @@ var trainingService = {
       return res.status(200).json();
     });
   },
-
-  // User app services
-
-  getRandomTraining: (req, res) => {
-    req.app.db.models.Trainings.aggregate([{ $sample: {size: 1} }], (err, trainings) => {
-      if (err) {
-        return res.status(400).json({
-          msg: "Failed to get training. Try again!",
-        });
-      }
-
-      return res.status(200).json(trainings[0]);
-    });
-  }
 };
 module.exports = trainingService;
- 

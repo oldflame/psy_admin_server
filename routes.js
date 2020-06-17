@@ -8,6 +8,8 @@ let questionService = require("./services/question");
 let questionCategoryService = require("./services/questionCategory");
 let overviewService = require("./services/overview");
 var trainingService = require("./services/training");
+let userService = require("./services/user");
+let trainingSessionService = require("./services/trainingsessions");
 let jose = require('node-jose');
 let config = require('./config');
 
@@ -119,6 +121,8 @@ exports = module.exports = (app) => {
   app.get('/api/account/images/:skip/:limit', imageService.getActiveImages);
   app.delete('/api/account/images/:imageID/:doRestore', imageService.deleteImage);
 
+  app.get('/api/account/images/sampleByCategory/:categoryId/:type/:count', imageService.sampleImagesByCategory);
+
   // Question Routes 
   app.get('/api/account/questions', questionService.getAllQuestions);
   app.get('/api/account/questions/:questioncategory', questionService.getQuestionsForCategory);
@@ -142,7 +146,12 @@ exports = module.exports = (app) => {
   app.put("/api/account/trainings/:trainingId/assignImages", trainingService.addImagesToTraining);
   app.delete("/api/account/trainings/:trainingId/removeImages/:imageDataId", trainingService.removeImagesFromTraining);
 
-  // User App routes
+  // Training Session Routes
 
-  app.get('/api/account/user/trainings/random', trainingService.getRandomTraining);
+  app.get('/api/account/user/training/ongoing', userService.checkOngoingTraining);
+  app.put('/api/account/user/trainingSession/response/:sessionId', trainingSessionService.updateSessionResponse);
+  app.get('/api/account/user/trainingSession/start', trainingSessionService.startSession);
+  app.get('/api/account/user/trainingSession/end', trainingSessionService.endSession);
+  app.get('/api/account/user/trainingSession/:sessionId', trainingSessionService.findById);
+
 };

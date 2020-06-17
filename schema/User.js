@@ -41,6 +41,10 @@ exports = module.exports = (app, mongoose) => {
         isActive: {
             type: Boolean,
             default: true
+        },
+        ongoingSession: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'TrainingSessions'
         }
     }, {
         timestamps: {

@@ -1,4 +1,5 @@
-let firebaseAdmin = require('firebase-admin');
+let firebaseAdmin = require('firebase-admin'),
+    mongoose = require('mongoose');
 let stream = require('stream');
 let fs = require('fs')
 
@@ -212,6 +213,51 @@ let imageService = {
         });
 
         workflow.emit('validateData');
+    },
+
+    sampleImagesByCategory: (req, res) => {
+        console.log("params",[
+            {
+              '$match': {
+                'category': mongoose.Types.ObjectId(req.params.categoryId), 
+                'imageType': parseInt(req.params.type)
+              }
+            }, 
+            {
+              '$sample': {
+                'size': parseInt(req.params.count)
+              }
+            }
+          ])
+        req.app.db.models.Image.aggregate([
+            {
+              '$match': {
+                'category': mongoose.Types.ObjectId(req.params.categoryId),
+                'imageType': parseInt(req.params.type)
+              }
+            }, 
+            {
+              '$sample': {
+                'size': parseInt(req.params.count)
+              }
+            }
+          ]).exec((err, images) => {
+            if (err) {
+                console.log("Error", err);
+                return res.status(400).json({
+                    msg: "Failed to fetch images"
+                });
+            }
+
+            console.log("Images", images)
+            if (images.length == 0) {
+                return res.status(400).json({
+                    msg: "No images found for this category"
+                })
+            }
+
+            return res.status(200).json(images);
+        })
     }
 }
 module.exports = imageService;
