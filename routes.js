@@ -12,6 +12,7 @@ let userService = require("./services/user");
 let trainingSessionService = require("./services/trainingsessions");
 let jose = require('node-jose');
 let config = require('./config');
+let notificationService = require('./services/notification');
 
 function verifyAuthorizationToken(token) {
   console.log('inside middlewares/authentication/verifyauthtoken', config.JWEKeySet.keys[0], token)
@@ -154,4 +155,6 @@ exports = module.exports = (app) => {
   app.get('/api/account/user/trainingSession/end', trainingSessionService.endSession);
   app.get('/api/account/user/trainingSession/:sessionId', trainingSessionService.findById);
 
+  // Notification Routes
+  app.put('/api/notification/user/:userId/token/:token',notificationService.addTokenToDB)
 };
