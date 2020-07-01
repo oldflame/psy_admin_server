@@ -156,5 +156,8 @@ exports = module.exports = (app) => {
   app.get('/api/account/user/trainingSession/:sessionId', trainingSessionService.findById);
 
   // Notification Routes
-  app.put('/api/notification/user/:userId/token/:token',notificationService.addTokenToDB)
+  app.put('/api/notification/user/:userId/token/:token',notificationService.addTokenToDB);
+
+  // Users Routes
+  app.get('/api/account/users', userService.getUsersList);
 };
