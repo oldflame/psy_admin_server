@@ -160,4 +160,5 @@ exports = module.exports = (app) => {
 
   // Users Routes
   app.get('/api/account/users', userService.getUsersList);
+  app.get('/api/account/users/imageResponseTrends/:userId', userService.getImageResponseTimeAndAccuracyTrend);
 };
