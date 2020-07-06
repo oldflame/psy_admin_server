@@ -20,10 +20,27 @@ var userService = {
     ).populate("ongoingSession");
   },
 
+  getUser: (req, res) => {
+    req.app.db.models.User.findOne(
+      {
+        _id: req.params.userId
+      },
+      (err, users) => {
+        if (err) {
+          console.log("err", err);
+          return res.status(400).json({
+            msg: "Failed to fetch user. Try again!",
+          });
+        }
+        return res.status(200).json(users);
+      }
+    );
+  }, 
+
   getUsersList: (req, res) => {
     return req.app.db.models.User.find(
       {},
-      "_id birthdate createdAt isActive",
+      "_id birthdate createdAt isActive firstName lastName",
       (err, users) => {
         if (err) {
           console.log("Find users err", err);
