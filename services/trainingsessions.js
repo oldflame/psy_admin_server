@@ -119,7 +119,26 @@ var trainingSessionService = {
 
             res.status(200).json(session);
         })
-    }
+    },
+
+    getUserTraining: (req, res) => {
+        req.app.db.models.TrainingSessions.find(
+            {userId: req.params.userId},(err, users) => {
+            if (err) {
+              console.log("Find users err", err);
+              return res.status(400).json({
+                msg: "Failed to fetch users. Try Again!",
+              });
+            }
+            console.log(users)
+            return res.status(200).json(users);
+          }
+        ).populate({
+            path:'userId'
+        }).populate({
+            path:'trainingId'
+        });;
+      },
 
 }
 
