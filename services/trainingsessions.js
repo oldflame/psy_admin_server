@@ -140,6 +140,16 @@ var trainingSessionService = {
         });;
       },
 
+    getAllTrainingSessions: (req, res) => {
+        req.app.db.models.TrainingSessions.find({}, (err, trainingSessions) => {
+            if (err) {
+                console.log("Error", err);
+                return res.json([]);
+              }
+              console.log("All training sessions: ", trainingSessions);
+              return res.status(200).json(trainingSessions);
+       })
+    }
 }
 
 module.exports = trainingSessionService;

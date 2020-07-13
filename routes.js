@@ -163,5 +163,5 @@ exports = module.exports = (app) => {
   app.get('/api/account/users/:userId', userService.getUser);
   app.get('/api/account/users/imageResponseTrends/:userId', userService.getImageResponseTimeAndAccuracyTrend);
   app.get('/api/account/users/trainingSession/:userId', trainingSessionService.getUserTraining);
-
+  app.get('/api/account/user/trainingSession/getAllTrainingSessions', trainingSessionService.getAllTrainingSessions);
 };
