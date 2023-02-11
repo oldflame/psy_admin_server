@@ -40,7 +40,7 @@
     "mongoose": "5.9.16",
     "morgan": "1.9.1",
     "node-jose": "^1.1.4",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.20",
     "serve-favicon": "~2.4.2"
   }
 }
